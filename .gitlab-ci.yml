@@ -3,7 +3,7 @@ stages:
   - compress
 
 pdf:
-  image: blang/latex:ubuntu
+  image: schickling/latex:latest
   stage: generate
   script:
     - pdflatex -halt-on-error -file-line-error -interaction=nonstopmode handbook.tex

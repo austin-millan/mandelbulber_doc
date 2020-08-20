@@ -8,15 +8,17 @@ pdf:
 	docker run \
 		--rm \
 		-v `pwd`:/data \
-		-it blang/latex:ubuntu \
-		pdflatex -halt-on-error -file-line-error -interaction=nonstopmode -output-directory /data/build /data/handbook.tex
+		-w /data \
+		-it schickling/latex:latest \
+		pdflatex -halt-on-error -file-line-error -interaction=nonstopmode -output-directory build handbook.tex
 
 compress:
 	docker run \
 		--rm \
 		-v `pwd`:/data \
+		-w /data \
 		-it minidocks/ghostscript \
-		bash -c "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=/data/build/handbook-compressed.pdf /data/build/handbook.pdf"
+		bash -c "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=/build/handbook-compressed.pdf /build/handbook.pdf"
 
 image:
 	docker build -t mandelbulber_docs:latest .
