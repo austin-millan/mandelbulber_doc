@@ -1,0 +1,25 @@
+stages:
+  - generate
+  - compress
+
+pdf:
+  image: blang/latex:ubuntu
+  stage: generate
+  script:
+    - pdflatex -halt-on-error -file-line-error -interaction=nonstopmode handbook.tex
+  artifacts:
+    expire_in: '5 yrs'
+    paths:
+      - handbook.pdf
+
+compress:
+  image: minidocks/ghostscript
+  stage: compress
+  needs:
+    - pdf
+  script:
+    - gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=handbook-compressed.pdf handbook.pdf
+  artifacts:
+    expire_in: '5 yrs'
+    paths:
+      - handbook-compressed.pdf
